@@ -68,47 +68,47 @@ router.post('/add', async (req, res) => {
 })
 
 router.put('/update/:stock_id', check_stock, async (req, res) => {
-    try {
-        const result = stock_Validation(req.body)
-        if (result.error != null) {
-            return res.json
-                ({
-                    success: false,
-                    message: (result.error.details[0].message)
-                })
-        }
-        const get_stock = await Stock.findOneAndUpdate(
-            {
-                _id: req.params.stock_id
-            },
-            {
-                product_name: req.body.product_name,
-                supplier_name: req.body.supplier_name,
-                buy_date: req.body.buy_date,
-                product_per_carton: req.body.product_per_carton,
-                quantity: req.body.quantity,
-                buy_price: req.body.buy_price,
-                sale_price: req.body.sale_price,
-            },
-            { new: true })
-        //apply condionif supplier updated then fo followimg
-        return res.json({
-            success: true,
-            message: "Supplier Updated Successfully...",
-            data: get_supplier
-        })
+
+    const result = stock_Validation(req.body)
+    if (result.error != null) {
+        return res.json
+            ({
+                success: false,
+                message: (result.error.details[0].message)
+            })
     }
-    catch (err) {
-        res.json({
-            success: false,
-            message: err
-        })
-    }
+    const get_stock = await Stock.findOneAndUpdate(
+        {
+            _id: req.params.stock_id
+        },
+        {
+            product_name: req.body.product_name,
+            supplier_name: req.body.supplier_name,
+            buy_date: req.body.buy_date,
+            product_per_carton: req.body.product_per_carton,
+            quantity: req.body.quantity,
+            buy_price: req.body.buy_price,
+            sale_price: req.body.sale_price,
+        },
+        { new: true })
+    //apply condionif supplier updated then fo followimg
+    return res.json({
+        success: true,
+        message: "Stock Updated Successfully...",
+        data: get_stock
+    })
+    // }
+    // catch (err) {
+    //     res.json({
+    //         success: false,
+    //         message: err
+    //     })
+    //}
 })
 
 router.get("/get_all", async (req, res) => {
     try {
-        const get_stock = await Stock.ind({})
+        const get_stock = await Stock.find({})
         if (get_stock.length == 0)
             return res.json
                 ({
