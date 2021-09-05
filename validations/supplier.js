@@ -3,8 +3,10 @@ function supplier_Validation(supplier) {
     const supplier_Schema = Joi.object
         ({
             supplier_name: Joi.string().required().min(1).max(120),
-            contact_no: Joi.array().required().min(1).max(120),
+            contact_no: Joi.number().required(),
             address: Joi.string().required().min(1).max(120),
+            supplier_email: Joi.string().required().min(1).max(120),
+            previous_balance: Joi.number().required(),
             //   owner_name: Joi.string().required().min(1).max(120),
         })
     return result = supplier_Schema.validate(supplier);

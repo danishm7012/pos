@@ -18,6 +18,8 @@ router.post('/add', add_customer, async (req, res) => {
         customer_name: req.body.customer_name,
         contact_no: req.body.contact_no,
         address: req.body.address,
+        customer_email: req.body.customer_email,
+        previous_balance: req.body.previous_balance
     })
     const add_customer = await new_customer.save();
     //how to check validation add_customer return ok result 
@@ -26,8 +28,6 @@ router.post('/add', add_customer, async (req, res) => {
         message: "customer added Successfully...",
         data: add_customer
     })
-
-
 })
 
 router.put('/update/:customer_id', check_customer, async (req, res) => {
@@ -47,6 +47,7 @@ router.put('/update/:customer_id', check_customer, async (req, res) => {
             {
                 customer_name: req.body.customer_name,
                 contact_no: req.body.contact_no,
+                customer_email: req.body.customer_email,
                 address: req.body.address,
             },
             { new: true })

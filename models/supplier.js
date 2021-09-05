@@ -7,13 +7,21 @@ const supplier_Schema = new mongoose.Schema
             required: true,
             unique: true,
         },
+        supplier_email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         contact_no: {
-            type: Array,
+            type: Number,
             required: true,
         },
         address: {
             type: String,
             required: true,
+        },
+        previous_balance: {
+            type: Number,
         },
         owner_name: {
             type: String,

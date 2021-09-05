@@ -2,33 +2,36 @@ const mongoose = require('mongoose');
 
 const product_Schema = new mongoose.Schema
     ({
+        barcode: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         product_name: {
             type: String,
             required: true,
             unique: true,
         },
-        supplier_name: {
+        details: {
             type: String,
+        },
+        category: {
+            type: String
+        },
+        product_per_carton: {
+            type: Number,
             required: true,
         },
-        buy_date: {
+        sale_price: {
             type: Date,
             required: true,
         },
-        total_carton: {
-            type: Number,
-            required: true
+        supplier_price: {
+            type: String,
+            required: true,
         },
-        quantity: {
-            type: Number,
-            required: true
-        },
-        buy_price: {
-            type: Number,
-            required: true
-        },
-        sale_price: {
-            type: Number,
+        supplier_name: {
+            type: String,
             required: true
         }
     })

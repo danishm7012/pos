@@ -14,5 +14,3 @@ function stock_Validation(product) {
 }
 
 module.exports.stock_Validation = stock_Validation;
-
-

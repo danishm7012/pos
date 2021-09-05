@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const supplier = require('./routes/supplier');
 const customer = require('./routes/customer');
 const stock = require('./routes/stock');
+const category = require('./routes/category');
+const product = require('./routes/product');
 
 const app = express();
 const dotenv = require('dotenv');
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use('/api/supplier', supplier)
 app.use('/api/customer', customer)
 app.use('/api/stock', stock)
+app.use('/api/category', category)
+app.use('/api/product', product)
 // app.use('/api/user', user)
 
 // app.use('/api/manufactuer', car_manufactuer)
@@ -52,7 +56,7 @@ app.get('/', (req, res) => {
     res.send("helloo from pos....");
 });
 
-app.listen(process.env.PORT || 4000, () => {
-    console.log("listening on port 4000")
+app.listen(process.env.PORT || 4001, () => {
+    console.log("listening on port 4001")
     // console.log(process.env.NODE_ENV)  
 });

@@ -18,6 +18,8 @@ router.post('/add', add_supplier, async (req, res) => {
             supplier_name: req.body.supplier_name,
             contact_no: req.body.contact_no,
             address: req.body.address,
+            supplier_email: req.body.supplier_email,
+            previous_balance: req.body.previous_balance
         })
         const add_supplier = await new_supplier.save();
         //how to check validation add_supplier return ok result 
@@ -52,6 +54,7 @@ router.put('/update/:supplier_id', check_supplier, async (req, res) => {
             {
                 supplier_name: req.body.supplier_name,
                 contact_no: req.body.contact_no,
+                supplier_email: req.body.supplier_email,
                 address: req.body.address,
             },
             { new: true })
