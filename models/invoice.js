@@ -12,6 +12,10 @@ const invoice_Schema = new mongoose.Schema
             required: true,
         },
         products: [{
+            product_id: {
+                type: String,
+                required: true,
+            },
             product_name: {
                 type: String,
                 required: true,

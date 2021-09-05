@@ -1,7 +1,8 @@
 const express = require("express");
-const { check_invoice } = require("../middlewares/invoice");
+// const { check_invoice } = require("../middlewares/invoice");
 const { Invoice } = require("../models/invoice");
 const { invoice } = require("../models/invoice");
+const { Stock } = require("../models/stock");
 const { invoice_Validation } = require("../validations/invoice");
 const router = express.Router();
 
@@ -22,11 +23,29 @@ router.post('/add', async (req, res) => {
                 message: "Add atleast 1 product"
             })
     }
+    //
     const new_invoice = new Invoice({
         customer_name: req.body.customer_name,
         date: req.body.date,
-        products: added_products
+        products: added_products,
+        grand_total: req.body.grand_total,
+        paid_amount: req.body.paid_amount
     })
+    for (let i = 0; i < added_products.length; i++) {
+        var find_stock = await Stock.findOne({
+            product_name: added_products[i].product_name
+        })
+        await Stock.findOneAndUpdate(
+            {
+                product_name: added_products[i].product_name
+            },
+            {
+                quantity: find_stock.quantity - added_products[i].quantity
+            }
+        )
+    }
+
+
 
     console.log("before saving")
     const add_invoice = await new_invoice.save();
@@ -40,7 +59,7 @@ router.post('/add', async (req, res) => {
         })
 })
 
-router.put('/update/:invoice_id', check_invoice, async (req, res) => {
+router.put('/update/:invoice_id',/* check_invoice,*/ async (req, res) => {
 
     const result = invoice_Validation(req.body)
     if (result.error != null) {
@@ -103,7 +122,7 @@ router.get("/get_all", async (req, res) => {
     }
 })
 
-router.get('/get/:invoice_id', check_invoice, async (req, res) => {
+router.get('/get/:invoice_id',/* check_invoice,*/ async (req, res) => {
     try {
         return res.json
             ({
@@ -119,7 +138,7 @@ router.get('/get/:invoice_id', check_invoice, async (req, res) => {
     }
 })
 
-router.delete('/delete/:invoice_id', check_invoice, async (req, res) => {
+router.delete('/delete/:invoice_id',/* check_invoice,*/ async (req, res) => {
     try {
         const get_invoice = await invoice.findOneAndRemove({ _id: req.params.invoice_id },
             { new: true })
