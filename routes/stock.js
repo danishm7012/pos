@@ -1,6 +1,7 @@
 const express = require("express");
 const { check_stock } = require("../middlewares/stock");
 const { Stock } = require("../models/stock");
+const { Supplier } = require("../models/supplier");
 const { stock_Validation } = require("../validations/stock");
 const router = express.Router();
 
@@ -32,9 +33,21 @@ router.post('/add', async (req, res) => {
             quantity: get_stock.quantity + req.body.quantity,
             buy_price: req.body.buy_price,
             sale_price: req.body.sale_price,
+            total_bill: (req.body.quantity * req.body.buy_price),
+            paid_amount: req.body.paid_amount
         }, {
             new: true
         })
+        var total = update_stock.total_bill - update_stock.paid_amount
+
+        var supplier = await Supplier.findOne({ supplier_name: req.body.supplier_name })
+        var find_supplier = await Supplier.findOneAndUpdate({
+            supplier_name: req.body.supplier_name,
+        },
+            {
+                previous_balance: supplier.previous_balance + total
+            })
+
         return res.json
             ({
                 success: true,
@@ -53,11 +66,22 @@ router.post('/add', async (req, res) => {
         quantity: req.body.quantity,
         buy_price: req.body.buy_price,
         sale_price: req.body.sale_price,
+        total_bill: (req.body.quantity * req.body.buy_price),
+        paid_amount: req.body.paid_amount
     })
 
     console.log("before saving")
     const add_stock = await new_stock.save();
     console.log("after saving")
+    var total1 = add_stock.total_bill - add_stock.paid_amount
+
+    var supplier = await Supplier.findOne({ supplier_name: req.body.supplier_name })
+    var find_supplier = await Supplier.findOneAndUpdate({
+        supplier_name: req.body.supplier_name,
+    },
+        {
+            previous_balance: supplier.previous_balance + total1
+        })
 
     return res.json
         ({

@@ -1,4 +1,5 @@
 const express = require("express");
+const { Customer } = require("../models/customer");
 // const { check_invoice } = require("../middlewares/invoice");
 const { Invoice } = require("../models/invoice");
 const { invoice } = require("../models/invoice");
@@ -46,10 +47,19 @@ router.post('/add', async (req, res) => {
     }
 
 
-
     console.log("before saving")
     const add_invoice = await new_invoice.save();
     console.log("after saving")
+    var total = add_invoice.grand_total - add_invoice.paid_amount
+    var customer = await Customer.findOne({ customer_name: req.body.customer_name })
+    var find_customer = await Customer.findOneAndUpdate({
+        customer_name: req.body.customer_name,
+    },
+        {
+            previous_balance: customer.previous_balance + total
+        })
+
+
 
     return res.json
         ({
@@ -124,11 +134,13 @@ router.get("/get_all", async (req, res) => {
 
 router.get('/get/:invoice_id',/* check_invoice,*/ async (req, res) => {
     try {
-        return res.json
-            ({
-                success: true,
-                data: req.invoice,
-            })
+        const get_invoice = await Invoice.findOne({ _id: req.params.invoice_id })
+        if (get_invoice)
+            return res.json
+                ({
+                    success: true,
+                    data: get_invoice,
+                })
     }
     catch (ex) {
         res.json({

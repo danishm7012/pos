@@ -5,7 +5,7 @@ const stock_Schema = new mongoose.Schema
         product_name: {
             type: String,
             required: true,
-            // unique: true,
+       
         },
         supplier_name: {
             type: String,
@@ -30,7 +30,14 @@ const stock_Schema = new mongoose.Schema
         sale_price: {
             type: Number,
             required: true
+        },
+        total_bill: {
+            type: Number,
+        },
+        paid_amount: {
+            type: Number,
         }
+
     })
 
 const Stock = mongoose.model('Stock', stock_Schema);

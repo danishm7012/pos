@@ -35,7 +35,6 @@ const invoice_Schema = new mongoose.Schema
         },
         paid_amount: {
             type: Number,
-
         }
     })
 
