@@ -9,8 +9,7 @@ const customer_Schema = new mongoose.Schema
         },
         customer_email: {
             type: String,
-            required: true,
-            unique: true,
+
         },
         contact_no: {
             type: Number,
@@ -18,9 +17,9 @@ const customer_Schema = new mongoose.Schema
         },
         address: {
             type: String,
-            required: true,
+
         },
-        previous_balance:{
+        previous_balance: {
             type: Number,
         },
         Customer_type: {

@@ -9,8 +9,7 @@ const supplier_Schema = new mongoose.Schema
         },
         supplier_email: {
             type: String,
-            required: true,
-            unique: true,
+
         },
         contact_no: {
             type: Number,
@@ -18,7 +17,6 @@ const supplier_Schema = new mongoose.Schema
         },
         address: {
             type: String,
-            required: true,
         },
         previous_balance: {
             type: Number,
