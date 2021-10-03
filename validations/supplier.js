@@ -4,9 +4,9 @@ function supplier_Validation(supplier) {
         ({
             supplier_name: Joi.string().required().min(1).max(120),
             contact_no: Joi.number().required(),
-            address: Joi.string().required().min(1).max(120),
-            supplier_email: Joi.string().required().min(1).max(120),
-            previous_balance: Joi.number().required(),
+            address: Joi.string(),
+            supplier_email: Joi.string(),
+            previous_balance: Joi.number(),
             //   owner_name: Joi.string().required().min(1).max(120),
         })
     return result = supplier_Schema.validate(supplier);
