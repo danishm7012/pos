@@ -150,6 +150,31 @@ router.get('/get/:invoice_id',/* check_invoice,*/ async (req, res) => {
     }
 })
 
+
+router.get('/getAllInvoices/:customer_name',/* check_invoice,*/ async (req, res) => {
+    try {
+        const get_invoice = await Invoice.find({ customer_name: req.params.customer_name })
+        if (get_invoice.length < 1)
+            return res.json
+                ({
+                    success: false,
+                    message: "No invoice yet",
+                })
+        if (get_invoice.length > 0)
+            return res.json
+                ({
+                    success: true,
+                    data: get_invoice,
+                })
+    }
+    catch (ex) {
+        res.json({
+            success: false,
+            message: "Server error occur",
+        })
+    }
+})
+
 router.delete('/delete/:invoice_id',/* check_invoice,*/ async (req, res) => {
     try {
         const get_invoice = await invoice.findOneAndRemove({ _id: req.params.invoice_id },

@@ -154,6 +154,30 @@ router.get("/get_all", async (req, res) => {
     }
 })
 
+
+router.get("/get_all/:supplier_name", async (req, res) => {
+    try {
+        const get_stock = await Stock.find({ supplier_name: req.params.supplier_name })
+        if (get_stock.length == 0)
+            return res.json
+                ({
+                    success: false,
+                    error: "No stock invoice  in list",
+                })
+        if (get_stock.length > 0)
+            return res.json
+                ({
+                    success: true,
+                    data: get_stock
+                })
+    }
+    catch (ex) {
+        res.json({
+            success: false,
+            message: "Server error occur",
+        })
+    }
+})
 router.get('/get/:stock_id', check_stock, async (req, res) => {
     try {
         return res.json
