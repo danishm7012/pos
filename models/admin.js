@@ -30,7 +30,7 @@ const admin_Schema = new mongoose.Schema
             minlength: 6,
             maxlength: 1040
         },
-        role: {
+        type: {
             type: String,
             required: true,
             //define enum here [super admin,sub admin, sales man e.t.c]

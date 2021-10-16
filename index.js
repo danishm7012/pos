@@ -7,6 +7,7 @@ const stock = require('./routes/stock');
 const category = require('./routes/category');
 const product = require('./routes/product');
 const invoice = require('./routes/invoice');
+const admin = require('./routes/admin');
 
 const app = express();
 const dotenv = require('dotenv');
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use('/api/supplier', supplier)
 app.use('/api/customer', customer)
 app.use('/api/stock', stock)
+app.use('/api/admin', admin)
 app.use('/api/category', category)
 app.use('/api/product', product)
 app.use('/api/invoice', invoice)
