@@ -87,6 +87,31 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.get("/get_all", async (req, res) => {
+    try {
+        const get_Admin = await Admin.find({ type: "sub admin" })
+        if (get_Admin.length == 0)
+            return res.json
+                ({
+                    success: false,
+                    error: "No admin in list",
+                })
+        if (get_Admin.length > 0)
+            return res.json
+                ({
+                    success: true,
+                    data: get_Admin
+                })
+    }
+    catch (ex) {
+        res.json({
+            success: false,
+            message: "Server error occur",
+        })
+    }
+})
+
+
 function logInValidation(vendor) {
     const vendor_schema = Joi.object
         ({
