@@ -5,7 +5,7 @@ const stock_Schema = new mongoose.Schema
         product_name: {
             type: String,
             required: true,
-       
+
         },
         supplier_name: {
             type: String,
@@ -36,6 +36,13 @@ const stock_Schema = new mongoose.Schema
         },
         paid_amount: {
             type: Number,
+        },
+        payment_date: {
+            type: Date,
+        },
+        details: {
+            type: String,
+
         }
 
     })
