@@ -87,7 +87,7 @@ router.get('/get_all_payments', async (req, res) => {
 })
 router.get('/get_all', async (req, res) => {
     try {
-        const get_payment = await Customer.find({})
+        const get_customer = await Customer.find({})
         if (get_customer.length == 0)
             return res.json
                 ({
