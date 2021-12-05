@@ -3,7 +3,7 @@ function customer_Validation(customer) {
     const customer_Schema = Joi.object
         ({
             customer_name: Joi.string().required().min(1).max(120),
-            customer_email: Joi.string(),
+            customer_email: Joi.string().allow(null),
             contact_no: Joi.string().required().min(1).max(120),
             address: Joi.string(),
             previous_balance: Joi.number(),
