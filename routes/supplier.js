@@ -113,6 +113,7 @@ router.put('/update/:supplier_id', check_supplier, async (req, res) => {
                 contact_no: req.body.contact_no,
                 supplier_email: req.body.supplier_email,
                 address: req.body.address,
+                previous_balance: req.body.previous_balance
             },
             { new: true })
         //apply condionif supplier updated then fo followimg

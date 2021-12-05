@@ -130,6 +130,7 @@ router.put('/update/:customer_id', check_customer, async (req, res) => {
                 contact_no: req.body.contact_no,
                 customer_email: req.body.customer_email,
                 address: req.body.address,
+                previous_balance:req.body.previous_balance
             },
             { new: true })
         //apply condionif customer updated then fo followimg
