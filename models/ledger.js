@@ -9,7 +9,6 @@ const ledgerSchema = new mongoose.Schema(
     },
     serielNumber: {
       type: String,
-      required: true,
     },
     particular: {
       type: String,
