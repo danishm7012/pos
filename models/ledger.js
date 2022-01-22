@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const ledgerSchema = new mongoose.Schema(
   {
-    supplierID: {
+    userID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Supplier",
     },
     serielNumber: {
       type: String,
@@ -38,7 +37,7 @@ const ledgerSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+)
 
-const Ledger = mongoose.model("Ledger", ledgerSchema);
-module.exports.Ledger = Ledger;
+const Ledger = mongoose.model('Ledger', ledgerSchema)
+module.exports.Ledger = Ledger
