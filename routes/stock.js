@@ -1,26 +1,33 @@
-const express = require("express");
-const { check_stock } = require("../middlewares/stock");
-const { Stock } = require("../models/stock");
-const { Supplier } = require("../models/supplier");
-const { Account } = require("../models/account");
-const { stock_Validation } = require("../validations/stock");
-const router = express.Router();
+const express = require('express')
+const { check_stock } = require('../middlewares/stock')
+const { Stock } = require('../models/stock')
+const { Supplier } = require('../models/supplier')
+const { Account } = require('../models/account')
+const { stock_Validation } = require('../validations/stock')
+const router = express.Router()
 
-router.post("/add", async (req, res) => {
-  const result = stock_Validation(req.body);
+router.post('/add', async (req, res) => {
+  const result = stock_Validation(req.body)
   if (result.error != null) {
     return res.json({
       success: false,
       message: result.error.details[0].message,
-    });
+    })
   }
+  var supplier = await Supplier.findOne({
+    supplier_name: req.body.supplier_name,
+  })
+  if (!supplier) {
+    return res.json({
+      success: false,
+      message: 'supplier notfound!',
+    })
+  }
+
   const get_stock = await Stock.findOne({
     product_name: req.body.product_name,
-    supplier_name: req.body.supplier_name,
-    buy_price: req.body.buy_price,
-    sale_price: req.body.sale_price,
-  });
-  console.log(get_stock);
+  })
+  console.log(get_stock)
   if (get_stock != null) {
     const update_stock = await Stock.findOneAndUpdate(
       {
@@ -40,29 +47,48 @@ router.post("/add", async (req, res) => {
       {
         new: true,
       }
-    );
-    var total = update_stock.total_bill - update_stock.paid_amount;
+    )
+    var total = update_stock.total_bill - update_stock.paid_amount
 
-    var supplier = await Supplier.findOne({
-      supplier_name: req.body.supplier_name,
-    });
     Account.findOne({ userID: supplier._id })
       .then(async (account) => {
-        account.balance = account.balance + total;
-        await account.save();
+        account.balance = account.balance + total
+        await account.save()
         res.json({
           success: true,
-          message: "Stock updated successfully",
+          message: 'Stock updated successfully',
           data: update_stock,
-        });
+        })
       })
       .catch((err) => {
         res.json({
           success: false,
-          message: "account no found",
+          message: 'Account no found, please add supplier first!',
           data: err,
-        });
-      });
+        })
+      })
+  } else {
+    const new_stock = new Stock({
+      product_name: req.body.product_name,
+      supplier_name: req.body.supplier_name,
+      buy_date: req.body.buy_date,
+      product_per_carton: req.body.product_per_carton,
+      quantity: req.body.quantity,
+      buy_price: req.body.buy_price,
+      sale_price: req.body.sale_price,
+      total_bill: req.body.quantity * req.body.buy_price,
+      paid_amount: req.body.paid_amount,
+    })
+
+    console.log('before saving')
+    const add_stock = await new_stock.save()
+    console.log('after saving')
+    var total1 = add_stock.total_bill - add_stock.paid_amount
+    res.json({
+      success: true,
+      message: 'Stock added successfully',
+      data: update_stock,
+    })
   }
   //   console.log("new record");
 
@@ -101,15 +127,15 @@ router.post("/add", async (req, res) => {
   //     message: "Stock added successfully",
   //     data: add_stock,
   //   });
-});
+})
 
-router.put("/update/:stock_id", check_stock, async (req, res) => {
-  const result = stock_Validation(req.body);
+router.put('/update/:stock_id', check_stock, async (req, res) => {
+  const result = stock_Validation(req.body)
   if (result.error != null) {
     return res.json({
       success: false,
       message: result.error.details[0].message,
-    });
+    })
   }
   const get_stock = await Stock.findOneAndUpdate(
     {
@@ -125,13 +151,13 @@ router.put("/update/:stock_id", check_stock, async (req, res) => {
       sale_price: req.body.sale_price,
     },
     { new: true }
-  );
+  )
   //apply condionif supplier updated then fo followimg
   return res.json({
     success: true,
-    message: "Stock Updated Successfully...",
+    message: 'Stock Updated Successfully...',
     data: get_stock,
-  });
+  })
   // }
   // catch (err) {
   //     res.json({
@@ -139,102 +165,102 @@ router.put("/update/:stock_id", check_stock, async (req, res) => {
   //         message: err
   //     })
   //}
-});
+})
 
-router.get("/get_all", async (req, res) => {
+router.get('/get_all', async (req, res) => {
   try {
-    const get_stock = await Stock.find({});
+    const get_stock = await Stock.find({})
     if (get_stock.length == 0)
       return res.json({
         success: false,
-        error: "No stock in list",
-      });
+        error: 'No stock in list',
+      })
     if (get_stock.length > 0)
       return res.json({
         success: true,
         data: get_stock,
-      });
+      })
   } catch (ex) {
     res.json({
       success: false,
-      message: "Server error occur",
-    });
+      message: 'Server error occur',
+    })
   }
-});
+})
 
-router.get("/get_all/:supplier_name", async (req, res) => {
+router.get('/get_all/:supplier_name', async (req, res) => {
   try {
     const get_stock = await Stock.find({
       supplier_name: req.params.supplier_name,
-    });
+    })
     if (get_stock.length == 0)
       return res.json({
         success: false,
-        error: "No stock invoice  in list",
-      });
+        error: 'No stock invoice  in list',
+      })
     if (get_stock.length > 0)
       return res.json({
         success: true,
         data: get_stock,
-      });
+      })
   } catch (ex) {
     res.json({
       success: false,
-      message: "Server error occur",
-    });
+      message: 'Server error occur',
+    })
   }
-});
-router.get("/get/:stock_id", check_stock, async (req, res) => {
+})
+router.get('/get/:stock_id', check_stock, async (req, res) => {
   try {
     return res.json({
       success: false,
       data: req.stock,
-    });
+    })
   } catch (ex) {
     res.json({
       success: false,
-      message: "Server error occur",
-    });
+      message: 'Server error occur',
+    })
   }
-});
+})
 
-router.delete("/delete/:stock_id", check_stock, async (req, res) => {
+router.delete('/delete/:stock_id', check_stock, async (req, res) => {
   try {
     const get_stock = await Stock.findOneAndRemove(
       { _id: req.params.stock_id },
       { new: true }
-    );
+    )
     return res.json({
       success: false,
-      error: "stock deleted successfully",
-    });
+      error: 'stock deleted successfully',
+    })
   } catch (ex) {
     res.json({
       success: false,
-      message: "Server error occur",
-    });
+      message: 'Server error occur',
+    })
   }
-});
+})
 
-router.get("/total", async (req, res) => {
+router.get('/total', async (req, res) => {
   try {
-    const get_stock = await Stock.countDocuments({});
+    const get_stock = await Stock.countDocuments({})
     if (get_stock == 0)
       return res.json({
         success: false,
-        error: "No stock in list",
-      });
+        error: 'No stock in list',
+      })
     if (get_stock > 0)
       return res.json({
         success: true,
         data: get_stock,
-      });
+      })
   } catch (ex) {
     res.json({
       success: false,
-      message: "Server error occur",
-    });
+      message: 'Server error occur',
+    })
   }
-});
+})
 
-module.exports = router;
+module.exports = router
