@@ -15,6 +15,16 @@ router.post('/add', async (req, res) => {
       message: result.error.details[0].message,
     })
   }
+  var supplier = await Supplier.findOne({
+    supplier_name: req.body.supplier_name,
+  })
+  if (!supplier) {
+    return res.json({
+      success: false,
+      message: 'supplier notfound!',
+    })
+  }
+
   const get_stock = await Stock.findOne({
     product_name: req.body.product_name,
     supplier_name: req.body.supplier_name,
