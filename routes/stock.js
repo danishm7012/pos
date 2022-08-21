@@ -185,11 +185,26 @@ router.get("/get_all", async (req, res) => {
         success: false,
         error: "No stock in list",
       });
+    let stock_list = [];
+
     if (get_stock.length > 0)
-      return res.json({
-        success: true,
-        data: get_stock,
+      get_stock.forEach((stock) => {
+        const index = stock_list.findIndex((object) => {
+          return object.product_name == stock.product_name;
+        });
+        if (index === -1) {
+          stock_list.push({
+            ...stock,
+          });
+        } else {
+          stock_list[index].quantity += stock.quantity;
+        }
       });
+
+    return res.json({
+      success: true,
+      data: get_stock,
+    });
   } catch (ex) {
     res.json({
       success: false,
