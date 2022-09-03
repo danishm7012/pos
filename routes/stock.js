@@ -33,7 +33,6 @@ router.post("/add", async (req, res) => {
             product_name: req.body.product_name,
             supplier_name: req.body.supplier_name,
             buy_date: req.body.buy_date,
-            product_per_carton: req.body.product_per_carton,
             quantity: req.body.quantity,
             buy_price: req.body.buy_price,
             sale_price: req.body.sale_price,
@@ -42,7 +41,7 @@ router.post("/add", async (req, res) => {
           };
           if (stock) {
             //updating quantity
-            stockFields.quantity = stock.quantity + stockFields.quantity;
+            stockFields.quantity = parseInt(stock.quantity) + parseInt(stockFields.quantity);
             // Update
             Stock.findOneAndUpdate(
               { product_name: req.body.product_name },
