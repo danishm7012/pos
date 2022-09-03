@@ -15,10 +15,6 @@ const stock_Schema = new mongoose.Schema
             type: Date,
             required: true,
         },
-        product_per_carton: {
-            type: Number,
-            // required: true
-        },
         quantity: {
             type: Number,
             required: true
