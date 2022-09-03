@@ -15,12 +15,12 @@ const product_Schema = new mongoose.Schema
         details: {
             type: String,
         },
+        quantity: {
+            type: Number,
+            required: true
+        },
         category: {
             type: String
-        },
-        product_per_carton: {
-            type: Number,
-            required: true,
         },
         sale_price: {
             type: Date,
