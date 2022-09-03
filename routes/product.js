@@ -24,7 +24,7 @@ router.post('/add', async (req, res) => {
                 product_name: req.body.product_name,
                 details: req.body.details,
                 category: req.body.category,
-                product_per_carton: req.body.product_per_carton,
+                quantity: req.body.quantity,
                 sale_price: req.body.sale_price,
                 supplier_price: req.body.supplier_price,
                 supplier_name: req.body.supplier_name,
@@ -178,40 +178,3 @@ router.get('/total', async (req, res) => {
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-// if (get_product == null) {
-//     const product = new Product({
-//         barcode: req.body.barcode,
-//         product_name: req.body.product_name,
-//         details: req.body.details,
-//         category: req.body.category,
-//         product_per_carton: req.body.product_per_carton,
-//         product_count: req.body.product_count,
-//         sale_price: req.body.sale_price,
-//         supplier_price: req.body.supplier_price,
-//         supplier_name: req.body.supplier_name,
-//     })
-//     const save_product = await product.save()
-//     if (save_product)
-//         return res.json
-//             ({
-//                 success: true,
-//                 message: "product added successfully",
-//             })
-// }
-// if (get_product != null) {
-//     const update_product = await Product.updateOne({ _id: get_product._id }, { $inc: { product_count: req.body.product_count } })
-//     if (update_product)
-//         return res.json
-//             ({
-//                 success: true,
-//                 message: "product count updated successfully",
-//             })
-// }
