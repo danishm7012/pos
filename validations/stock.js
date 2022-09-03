@@ -4,7 +4,6 @@ function stock_Validation(product) {
     product_name: Joi.string().required().min(1).max(120),
     supplier_name: Joi.string().required().min(1).max(120),
     buy_date: Joi.date().required(),
-    product_per_carton: Joi.number(),
     quantity: Joi.number().required().min(1),
     buy_price: Joi.number().required().min(1),
     sale_price: Joi.number().required().min(1),
