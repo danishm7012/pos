@@ -42,7 +42,7 @@ router.post("/add", async (req, res) => {
           };
           if (stock) {
             //updating quantity
-            stockFields.quantity = stock.quantity + stockFields.quantity;
+            stockFields.quantity = parseInt(stock.quantity) + parseInt(stockFields.quantity);
             // Update
             Stock.findOneAndUpdate(
               { product_name: req.body.product_name },
