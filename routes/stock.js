@@ -37,7 +37,7 @@ router.post("/add", async (req, res) => {
             quantity: req.body.quantity,
             buy_price: req.body.buy_price,
             sale_price: req.body.sale_price,
-            total_bill: req.body.quantity * req.body.buy_price,
+            total_bill: parseInt(req.body.quantity) * parseInt(req.body.buy_price),
             paid_amount: req.body.paid_amount,
           };
           if (stock) {
@@ -197,7 +197,7 @@ router.get("/get_all", async (req, res) => {
             ...stock,
           });
         } else {
-          stock_list[index].quantity += stock.quantity;
+          parseInt(stock_list[index].quantity) += parseInt(stock.quantity);
         }
       });
 
