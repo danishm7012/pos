@@ -60,22 +60,32 @@ router.post('/add', add_supplier, async (req, res) => {
 
 router.post('/add_payment', async (req, res) => {
   let ammount
-  Account.findOne({ userID: req.body.supplierID })
+
+    Account.find({}, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(result)
+        console.log(result.find(x=>x.userID===req?.body?.supplierID));
+      }
+    });
+  // console.log(Account.find({}))
+  Account.findOne({ userID: req?.body?.supplierID })
     .then(async (account) => {
       if (req.body.debit) {
-        ammount = account.balance - req.body.ammount
+        ammount = account.balance - req.body.paid_amount
       } else {
-        ammount = account.balance + req.body.ammount
+        ammount = account.balance + req.body.paid_amount
       }
 
       account.balance = ammount
       await account.save()
 
-      const debit = req.body.debit ? req.body.ammount : 0
-      const credit = req.body.debit ? 0 : req.body.ammount
+      const debit = req.body.debit ? req.body.paid_amount : 0
+      const credit = req.body.debit ? 0 : req.body.paid_amount
       const new_record = new Ledger({
         userID: req.body.supplierID,
-        particular: req.body.particular,
+        particular: "0",
         chqDate: req.body.chqDate,
         chequeNo: req.body.chequeNo,
         debit,
